@@ -12,6 +12,7 @@ const (
   T_PLUS
   T_MINUS
   T_TIMES
+  T_POWER
   T_DIV
   T_LPAREN
   T_RPAREN
@@ -63,6 +64,8 @@ func Lex(s string) ([]Token, error) {
       tokens = append(tokens, Token { T_TIMES, s[i], i })
     } else if s[i] == '/' {
       tokens = append(tokens, Token { T_DIV, s[i], i })
+    } else if s[i] == '^' {
+      tokens = append(tokens, Token { T_POWER, s[i], i })
     } else if s[i] == '(' {
       tokens = append(tokens, Token { T_LPAREN, s[i], i })
     } else if s[i] == ')' {
