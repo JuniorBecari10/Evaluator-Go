@@ -32,7 +32,6 @@ func Lex(s string) ([]Token, error) {
   
   i := 0
   for i < len(s) {
-    
     if s[i] == ' ' {
       i++
       continue
@@ -46,6 +45,7 @@ func Lex(s string) ([]Token, error) {
       n, _ := strconv.Atoi(s[start:i])
       
       tokens = append(tokens, Token { T_NUMBER, n, start })
+      i--
     } else if IsLetter(s[i]) {
       start := i
       
@@ -54,22 +54,23 @@ func Lex(s string) ([]Token, error) {
       }
       
       tokens = append(tokens, Token { T_IDENT, s[start:i], start })
+      i--
     } else if s[i] == '+' {
-      tokens = append(tokens, Token { T_PLUS, s[start:i], start })
+      tokens = append(tokens, Token { T_PLUS, s[i], i })
     } else if s[i] == '-' {
-      tokens = append(tokens, Token { T_MINUS, s[start:i], start })
+      tokens = append(tokens, Token { T_MINUS, s[i], i })
     } else if s[i] == '*' {
-      tokens = append(tokens, Token { T_TIMES, s[start:i], start })
+      tokens = append(tokens, Token { T_TIMES, s[i], i })
     } else if s[i] == '/' {
-      tokens = append(tokens, Token { T_DIV, s[start:i], start })
+      tokens = append(tokens, Token { T_DIV, s[i], i })
     } else if s[i] == '(' {
-      tokens = append(tokens, Token { T_LPAREN, s[start:i], start })
+      tokens = append(tokens, Token { T_LPAREN, s[i], i })
     } else if s[i] == ')' {
-      tokens = append(tokens, Token { T_RPAREN, s[start:i], start })
+      tokens = append(tokens, Token { T_RPAREN, s[i], i })
     } else if s[i] == '=' {
-      tokens = append(tokens, Token { T_EQUALS, s[start:i], start })
+      tokens = append(tokens, Token { T_EQUALS, s[i], i })
     } else if s[i] == ';' {
-      tokens = append(tokens, Token { T_SEMICOLON, s[start:i], start })
+      tokens = append(tokens, Token { T_SEMICOLON, s[i], i })
     } else {
       fmt.Printf("Unknown token: %s\n", s)
       
