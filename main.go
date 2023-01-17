@@ -8,6 +8,7 @@ import (
 
 func main() {
   scanner := bufio.NewScanner(os.Stdin)
+  Clear()
   
   fmt.Println("Expression Evaluator\n")
   
@@ -15,7 +16,13 @@ func main() {
     fmt.Printf("> ")
     scanner.Scan()
     
-    tks, err := Lex(scanner.Text())
+    exp := scanner.Text()
+    
+    if RunCommand(exp) {
+      continue
+    }
+    
+    tks, err := Lex(exp)
     
     if err != nil {
       continue
@@ -23,4 +30,17 @@ func main() {
     
     fmt.Println(tks)
   }
+}
+
+func RunCommand(s string) bool {
+  switch {
+    case s == "clear" || s == "cls":
+      Clear()
+      return true
+    
+    case s == "exit":
+      os.Exit(0)
+  }
+  
+  return false
 }
