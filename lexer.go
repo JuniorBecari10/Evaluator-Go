@@ -54,6 +54,22 @@ func Lex(s string) ([]Token, error) {
       }
       
       tokens = append(tokens, Token { T_IDENT, s[start:i], start })
+    } else if s[i] == '+' {
+      tokens = append(tokens, Token { T_PLUS, s[start:i], start })
+    } else if s[i] == '-' {
+      tokens = append(tokens, Token { T_MINUS, s[start:i], start })
+    } else if s[i] == '*' {
+      tokens = append(tokens, Token { T_TIMES, s[start:i], start })
+    } else if s[i] == '/' {
+      tokens = append(tokens, Token { T_DIV, s[start:i], start })
+    } else if s[i] == '(' {
+      tokens = append(tokens, Token { T_LPAREN, s[start:i], start })
+    } else if s[i] == ')' {
+      tokens = append(tokens, Token { T_RPAREN, s[start:i], start })
+    } else if s[i] == '=' {
+      tokens = append(tokens, Token { T_EQUALS, s[start:i], start })
+    } else if s[i] == ';' {
+      tokens = append(tokens, Token { T_SEMICOLON, s[start:i], start })
     } else {
       fmt.Printf("Unknown token: %s\n", s)
       
