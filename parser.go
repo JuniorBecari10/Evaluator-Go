@@ -39,7 +39,7 @@ func Eval(tks []Token) *Queue {
         } else if tks[i].content == ")" {
           pop := stack.Pop()
           count := 0
-          for pop == "(" {
+          for pop != "(" {
             if pop == ")" {
               count++
               pop = stack.Pop()
