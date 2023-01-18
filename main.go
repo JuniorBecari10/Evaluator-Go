@@ -28,9 +28,11 @@ func main() {
       continue
     }
     
-    res := Parse(tks)
+    res, err := Parse(tks)
     
-    fmt.Println(res)
+    if err == nil {
+      fmt.Println(res)
+    }
   }
 }
 

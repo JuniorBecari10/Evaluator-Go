@@ -3,16 +3,22 @@ package main
 import (
   "fmt"
   "strconv"
+  "errors"
   "math"
 )
 
 var vars map[string]int
 
-func Parse(tks []Token) float64 {
+func Parse(tks []Token) (float64, error) {
   s := Eval(tks)
-  res := PostFix(s)
+  fmt.Println(s)
+  res, err := PostFix(s)
   
-  return res
+  if err != nil {
+    return -1, err
+  }
+  
+  return res, nil
 }
 
 // Shunting Yard Algorithm
@@ -36,20 +42,20 @@ func Eval(tks []Token) *Queue {
           for pop == "(" {
             if pop == ")" {
               count++
+              pop = stack.Pop()
               continue
             }
             
             if pop == "(" && count > 0 {
               count--
+              pop = stack.Pop()
               continue
             }
             
             queue.Enqueue(pop)
             pop = stack.Pop()
           }
-        }
-        
-        if Precedence(tks[i].content) > Precedence(stack.Peek()) {
+        } else if Precedence(tks[i].content) > Precedence(stack.Peek()) {
           stack.Push(tks[i].content)
         } else {
           queue.Enqueue(tks[i].content)
@@ -70,7 +76,7 @@ func Eval(tks []Token) *Queue {
   return queue
 }
 
-func PostFix(q *Queue) float64 {
+func PostFix(q *Queue) (float64, error) {
   stack := NewStack([]string {})
   
   i := 0
@@ -81,6 +87,12 @@ func PostFix(q *Queue) float64 {
       sec := stack.Pop()
       fir := stack.Pop()
       
+      // check division by zero
+      if sec == "0" && q.Get(i) == "/" {
+        fmt.Println("Division by zero.")
+        return -1, errors.New("zero div")
+      }
+      
       stack.Push(fmt.Sprint(Calc(fir, sec, q.Get(i))))
     }
     
@@ -89,7 +101,7 @@ func PostFix(q *Queue) float64 {
   
   v, _ := strconv.ParseFloat(stack.Pop(), 64)
   
-  return v
+  return v, nil
 }
 
 func Precedence(c string) int {
