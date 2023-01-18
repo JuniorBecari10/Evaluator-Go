@@ -11,7 +11,6 @@ var vars map[string]int
 
 func Parse(tks []Token) (float64, error) {
   s := Eval(tks)
-  fmt.Println(s)
   res, err := PostFix(s)
   
   if err != nil {
