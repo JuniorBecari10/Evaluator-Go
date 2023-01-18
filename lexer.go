@@ -33,10 +33,10 @@ func Lex(s string) ([]Token, error) {
     if s[i] == ' ' {
       i++
       continue
-    } else if IsDigit(s[i]) {
+    } else if IsDigit(s[i]) || s[i] == '.' {
       start := i
       
-      for i < len(s) && IsDigit(s[i]) {
+      for i < len(s) && (IsDigit(s[i]) || s[i] == '.') {
         i++
       }
       
