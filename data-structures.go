@@ -1,47 +1,37 @@
 package main
 
-import "fmt"
-
-type Any interface {}
-
-type DataStruct interface {
-  func Get(index int) Any
-  func Len() int
-  
-}
-
 type Stack struct {
-  value []Any
+  value []string
 }
 
 type Queue struct {
-  value []Any
+  value []string
 }
 
 // --- //
 
-func NewStack(values []Any) *Stack {
+func NewStack(values []string) *Stack {
   return &Stack { values }
 }
 
-func (s *Stack) Push(v Any) {
+func (s *Stack) Push(v string) {
   s.value = append(s.value, v)
 }
 
-func (s *Stack) Pop() Any {
+func (s *Stack) Pop() string {
   ret := s.value[len(s.value) - 1]
   s.value = s.value[:len(s.value) - 1]
   
   return ret
 }
 
-func (s *Stack) Peek() Any {
+func (s *Stack) Peek() string {
   ret := s.value[len(s.value) - 1]
   
   return ret
 }
 
-func (s *Stack) Get(index int) Any {
+func (s *Stack) Get(index int) string {
   return s.value[index]
 }
 
@@ -51,28 +41,28 @@ func (s *Stack) Len() int {
 
 // --- //
 
-func NewQueue(values []Any) *Queue {
+func NewQueue(values []string) *Queue {
   return &Queue { values }
 }
 
-func (q *Queue) Enqueue(v Any) {
+func (q *Queue) Enqueue(v string) {
   q.value = append(q.value, v)
 }
 
-func (q *Queue) Dequeue() Any {
+func (q *Queue) Dequeue() string {
   ret := q.value[0]
   q.value = q.value[1:]
   
   return ret
 }
 
-func (q *Queue) Poll() Any {
+func (q *Queue) Poll() string {
   ret := q.value[0]
   
   return ret
 }
 
-func (q *Queue) Get(index int) Any {
+func (q *Queue) Get(index int) string {
   return q.value[index]
 }
 

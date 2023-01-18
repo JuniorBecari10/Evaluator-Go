@@ -2,7 +2,6 @@ package main
 
 import (
   "fmt"
-  "strconv"
   "errors"
 )
 
@@ -20,11 +19,9 @@ const (
   T_SEMICOLON
 )
 
-type Any interface {}
-
 type Token struct {
   kind int
-  content Any
+  content string
   pos int
 }
 
@@ -43,9 +40,7 @@ func Lex(s string) ([]Token, error) {
         i++
       }
       
-      n, _ := strconv.Atoi(s[start:i])
-      
-      tokens = append(tokens, Token { T_NUMBER, n, start })
+      tokens = append(tokens, Token { T_NUMBER, s[start:i], start })
       i--
     } else if IsLetter(s[i]) {
       start := i
@@ -57,23 +52,23 @@ func Lex(s string) ([]Token, error) {
       tokens = append(tokens, Token { T_IDENT, s[start:i], start })
       i--
     } else if s[i] == '+' {
-      tokens = append(tokens, Token { T_PLUS, s[i], i })
+      tokens = append(tokens, Token { T_PLUS, string(s[i]), i })
     } else if s[i] == '-' {
-      tokens = append(tokens, Token { T_MINUS, s[i], i })
+      tokens = append(tokens, Token { T_MINUS, string(s[i]), i })
     } else if s[i] == '*' {
-      tokens = append(tokens, Token { T_TIMES, s[i], i })
+      tokens = append(tokens, Token { T_TIMES, string(s[i]), i })
     } else if s[i] == '/' {
-      tokens = append(tokens, Token { T_DIV, s[i], i })
+      tokens = append(tokens, Token { T_DIV, string(s[i]), i })
     } else if s[i] == '^' {
-      tokens = append(tokens, Token { T_POWER, s[i], i })
+      tokens = append(tokens, Token { T_POWER, string(s[i]), i })
     } else if s[i] == '(' {
-      tokens = append(tokens, Token { T_LPAREN, s[i], i })
+      tokens = append(tokens, Token { T_LPAREN, string(s[i]), i })
     } else if s[i] == ')' {
-      tokens = append(tokens, Token { T_RPAREN, s[i], i })
+      tokens = append(tokens, Token { T_RPAREN, string(s[i]), i })
     } else if s[i] == '=' {
-      tokens = append(tokens, Token { T_EQUALS, s[i], i })
+      tokens = append(tokens, Token { T_EQUALS, string(s[i]), i })
     } else if s[i] == ';' {
-      tokens = append(tokens, Token { T_SEMICOLON, s[i], i })
+      tokens = append(tokens, Token { T_SEMICOLON, string(s[i]), i })
     } else {
       fmt.Printf("Unknown token: %s\n", s)
       

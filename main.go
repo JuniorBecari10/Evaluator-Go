@@ -28,7 +28,9 @@ func main() {
       continue
     }
     
-    fmt.Println(tks)
+    res := Parse(tks)
+    
+    fmt.Println(res)
   }
 }
 
