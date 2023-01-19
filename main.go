@@ -64,6 +64,14 @@ func RunCommand(s string) bool {
     case s == "clearvars":
       vars = make(map[string]string, 0)
       return true
+    
+    case s == "listvars":
+      fmt.Println("List of Variables:\n")
+      
+      for k, v := range vars {
+        fmt.Printf("%s: %s\n", k, v)
+      }
+      return true
   }
   
   return false

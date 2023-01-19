@@ -8,6 +8,7 @@ import (
 )
 
 var vars map[string]string = make(map[string]string, 0)
+
 var history []string
 
 func Parse(tks []Token) (float64, error) {
@@ -58,8 +59,6 @@ func Parse(tks []Token) (float64, error) {
   if var_decl {
     tks = tks[2:]
   }
-  
-  fmt.Println(tks)
   
   // do evaluation
   s := Eval(tks)
