@@ -31,3 +31,7 @@ func Clear() {
 func IsKindOperator(kind int) bool {
   return kind >= 2
 }
+
+func Remove(slice []Token, i int) []Token {
+    return append(slice[:i], slice[i + 1:]...)
+}

@@ -53,11 +53,11 @@ func Parse(tks []Token) (float64, error) {
       tks[i] = Token {T_NUMBER, val, t.pos }
     }
     
-    if IsKindOperator(t.kind) {
-      if IsKindOperator(tks[i - 1].kind) || IsKindOperator(tks[i + 1].kind) {
-        fmt.Println("You cannot put two operators together.")
-        return -1, errors.New("op together")
-      }
+    if i < len(tks) - 1 && t.kind == T_MINUS && tks[i + 1].kind == T_NUMBER {
+      val := "-" + tks[i + 1].content
+      
+      tks[i + 1].content = val
+      tks = Remove(tks, i)
     }
   }
   
@@ -65,6 +65,8 @@ func Parse(tks []Token) (float64, error) {
   if var_decl {
     tks = tks[2:]
   }
+  
+  fmt.Println(tks)
   
   // do evaluation
   s := Eval(tks)
