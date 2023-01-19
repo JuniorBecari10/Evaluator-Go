@@ -27,3 +27,7 @@ func Clear() {
     cmd.Run()
   }
 }
+
+func IsKindOperator(kind int) bool {
+  return kind >= 2
+}
