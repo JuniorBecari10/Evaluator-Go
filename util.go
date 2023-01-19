@@ -4,7 +4,14 @@ import (
   "os"
   "os/exec"
   "runtime"
+  "fmt"
 )
+
+type Token struct {
+  kind int
+  content string
+  pos int
+}
 
 func IsDigit(c uint8) bool {
   return c >= '0' && c <= '9'
@@ -34,4 +41,11 @@ func IsKindOperator(kind int) bool {
 
 func Remove(slice []Token, i int) []Token {
     return append(slice[:i], slice[i + 1:]...)
+}
+
+func Insert(slice []Token, item Token, index int) []Token {
+  slice = append(slice[:index + 1], slice[index:]...)
+  slice[index] = item
+  
+  return slice
 }
