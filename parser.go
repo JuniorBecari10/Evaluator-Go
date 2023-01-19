@@ -8,13 +8,16 @@ import (
 )
 
 var vars map[string]string = make(map[string]string, 0)
+var history []string
 
 func Parse(tks []Token) (float64, error) {
   var_decl := false
   var_name := ""
   
   for i, t := range tks {
+    // check if it's a variable declaration
     if t.kind == T_EQUALS {
+      // check syntax error (i.e. the equals sign isn't in the second index inside the array and there is no identifier before it)
       if i != 1 || (i > 0 && tks[i - 1].kind != T_IDENT) {
         fmt.Println("Syntax error when declaring a variable.\n")
         fmt.Println("Examples:\nx = 10\ny = 3 - (2 * 5)")
@@ -23,24 +26,40 @@ func Parse(tks []Token) (float64, error) {
       
       var_decl = true
       var_name = tks[i - 1].content
+      
+      // verify if the user has used a special variable name
+      if var_name == "ans" {
+        fmt.Printf("You cannot use '%s' as a variable name; it's a special variable.\n", var_name)
+        return -1, errors.New("var special")
+      }
     }
     
-    if t.kind == T_IDENT && (i < len(tks) - 1 && tks[i + 1].kind != T_EQUALS) {
+    // check if the user's using a variable in the expression
+    // check if there's no equals after the identifier or if it's the last element in the array of tokens
+    if t.kind == T_IDENT && ((i < len(tks) - 1 && tks[i + 1].kind != T_EQUALS) || (i == len(tks) - 1)) {
       val, ok := vars[t.content]
       
+      // if the variable doesn't exist, show error
       if !ok {
-        fmt.Printf("Variable '%s' doesn't exist.\n", t.content)
+        if t.content == "ans" {
+          fmt.Println("Run an expression first to use this variable.")
+        } else {
+          fmt.Printf("Variable '%s' doesn't exist.\n", t.content)
+        }
         return -1, errors.New("var doesn't exist")
       }
       
+      // replace identifier by the variable's value
       tks[i] = Token {T_NUMBER, val, t.pos }
     }
   }
   
+  // remove variable declaration part
   if var_decl {
     tks = tks[2:]
   }
   
+  // do evaluation
   s := Eval(tks)
   res, err := PostFix(s)
   
@@ -48,9 +67,16 @@ func Parse(tks []Token) (float64, error) {
     return -1, err
   }
   
+  // if it's a variable declaration, put the result in the variables map
   if var_decl {
     vars[var_name] = fmt.Sprint(res)
   }
+  
+  // update value of the special variable 'ans'
+  vars["ans"] = fmt.Sprint(res)
+  
+  // append result to history
+  history = append(history, fmt.Sprint(res))
   
   return res, nil
 }

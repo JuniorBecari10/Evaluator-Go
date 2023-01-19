@@ -18,6 +18,10 @@ func main() {
     
     exp := scanner.Text()
     
+    if exp == "" {
+      continue
+    }
+    
     if RunCommand(exp) {
       continue
     }
@@ -44,6 +48,18 @@ func RunCommand(s string) bool {
     
     case s == "exit":
       os.Exit(0)
+    
+    case s == "history" || s == "hist":
+      if len(history) == 0 {
+        fmt.Println("You haven't evaluated any expressions!")
+        return true
+      }
+      
+      for _, h := range history {
+        fmt.Println(h)
+      }
+      
+      return true
   }
   
   return false
