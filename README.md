@@ -22,3 +22,4 @@ Use semicolon `;` to split expressions.
 ### Special variables
 
 There are some special variables, and you cannot use their names to declare new variables.
+

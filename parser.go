@@ -7,14 +7,49 @@ import (
   "math"
 )
 
-var vars map[string]int
+var vars map[string]string = make(map[string]string, 0)
 
 func Parse(tks []Token) (float64, error) {
+  var_decl := false
+  var_name := ""
+  
+  for i, t := range tks {
+    if t.kind == T_EQUALS {
+      if i != 1 || (i > 0 && tks[i - 1].kind != T_IDENT) {
+        fmt.Println("Syntax error when declaring a variable.\n")
+        fmt.Println("Examples:\nx = 10\ny = 3 - (2 * 5)")
+        return -1, errors.New("var decl")
+      }
+      
+      var_decl = true
+      var_name = tks[i - 1].content
+    }
+    
+    if t.kind == T_IDENT && (i < len(tks) - 1 && tks[i + 1].kind != T_EQUALS) {
+      val, ok := vars[t.content]
+      
+      if !ok {
+        fmt.Printf("Variable '%s' doesn't exist.\n", t.content)
+        return -1, errors.New("var doesn't exist")
+      }
+      
+      tks[i] = Token {T_NUMBER, val, t.pos }
+    }
+  }
+  
+  if var_decl {
+    tks = tks[2:]
+  }
+  
   s := Eval(tks)
   res, err := PostFix(s)
   
   if err != nil {
     return -1, err
+  }
+  
+  if var_decl {
+    vars[var_name] = fmt.Sprint(res)
   }
   
   return res, nil
