@@ -52,10 +52,6 @@ func Parse(tks []Token) (float64, error) {
       // replace identifier by the variable's value
       tks[i] = Token {T_NUMBER, val, t.pos }
     }
-    
-    if i < len(tks) - 1 && t.kind == T_MINUS && tks[i + 1].kind == T_NUMBER {
-      
-    }
   }
   
   // remove variable declaration part

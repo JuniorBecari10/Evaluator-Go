@@ -4,14 +4,7 @@ import (
   "os"
   "os/exec"
   "runtime"
-  "fmt"
 )
-
-type Token struct {
-  kind int
-  content string
-  pos int
-}
 
 func IsDigit(c uint8) bool {
   return c >= '0' && c <= '9'
