@@ -62,15 +62,26 @@ func RunCommand(s string) bool {
       return true
     
     case s == "clearvars":
+      ans := vars["ans"]
       vars = make(map[string]string, 0)
+      
+      vars["ans"] = ans
       return true
     
     case s == "listvars":
-      fmt.Println("List of Variables:\n")
-      
       for k, v := range vars {
         fmt.Printf("%s: %s\n", k, v)
       }
+      return true
+    
+    case s == "help":
+      fmt.Println("Commands:")
+      fmt.Println("clear/cls - Clear the screen;")
+      fmt.Println("history/hist - List the history of results;")
+      fmt.Println("clearvars - Clear all variables;")
+      fmt.Println("listvars - List all variables;")
+      fmt.Println("help - Display this help message.")
+      
       return true
   }
   
