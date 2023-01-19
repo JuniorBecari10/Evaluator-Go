@@ -16,7 +16,7 @@ const (
   T_LPAREN
   T_RPAREN
   T_EQUALS
-  //T_SEMICOLON
+  T_SEMICOLON
 )
 
 type Token struct {
@@ -33,21 +33,14 @@ func Lex(s string) ([]Token, error) {
     if s[i] == ' ' {
       i++
       continue
-    } else if IsDigit(s[i]) || s[i] == '.' || (s[i] == '-' && IsDigit(s[i + 1])) {
+    } else if IsDigit(s[i]) || s[i] == '.' {
       start := i
-      is_neg := s[i] == '-' && IsDigit(s[i + 1])
-      
-      if is_neg {
-        i++
-      }
       
       for i < len(s) && (IsDigit(s[i]) || s[i] == '.') {
         i++
       }
       
-      n := s[start:i]
-      
-      tokens = append(tokens, Token { T_NUMBER, n, start })
+      tokens = append(tokens, Token { T_NUMBER, s[start:i], start })
       i--
     } else if IsLetter(s[i]) {
       start := i
@@ -74,6 +67,8 @@ func Lex(s string) ([]Token, error) {
       tokens = append(tokens, Token { T_RPAREN, string(s[i]), i })
     } else if s[i] == '=' {
       tokens = append(tokens, Token { T_EQUALS, string(s[i]), i })
+    } else if s[i] == ';' {
+      tokens = append(tokens, Token { T_SEMICOLON, string(s[i]), i })
     } else {
       fmt.Printf("Unknown token: %s\n", s)
       
