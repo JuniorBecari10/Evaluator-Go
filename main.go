@@ -60,6 +60,10 @@ func RunCommand(s string) bool {
       }
       
       return true
+    
+    case s == "clearvars":
+      vars = make(map[string]string, 0)
+      return true
   }
   
   return false
