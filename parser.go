@@ -33,11 +33,15 @@ func Eval(tks []Token) *Queue {
     } else {
       // otherwise, if the length of the stack is greater than 0 (i.e. there's something in there),
       if stack.Len() > 0 {
+        // check for parenthesis; if it's a opening one, push it to the stack
         if tks[i].content == "(" {
           stack.Push(tks[i].content)
+          // if it's a closing one
         } else if tks[i].content == ")" {
+          // pop every item of the stack until find the matching opening parenthesis
           pop := stack.Pop()
           count := 0
+          // loop to find
           for pop != "(" {
             if pop == ")" {
               count++
@@ -51,14 +55,18 @@ func Eval(tks []Token) *Queue {
               continue
             }
             
+            // enqueue the popped item
             queue.Enqueue(pop)
             pop = stack.Pop()
           }
+          // if the precedence of the current item is greater than the one on the top of the stack, push it
         } else if Precedence(tks[i].content) > Precedence(stack.Peek()) {
           stack.Push(tks[i].content)
         } else {
+          // otherwise enqueue
           queue.Enqueue(tks[i].content)
         }
+        // otherwise, push
       } else {
          stack.Push(tks[i].content)
        }
