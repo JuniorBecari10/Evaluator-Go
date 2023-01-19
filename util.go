@@ -27,3 +27,18 @@ func Clear() {
     cmd.Run()
   }
 }
+
+func IsKindOperator(kind int) bool {
+  return kind >= 2
+}
+
+func Remove(slice []Token, i int) []Token {
+    return append(slice[:i], slice[i + 1:]...)
+}
+
+func Insert(slice []Token, item Token, index int) []Token {
+  slice = append(slice[:index + 1], slice[index:]...)
+  slice[index] = item
+  
+  return slice
+}
